@@ -2,3 +2,6 @@ project_id = "dlksrihnjbkvskubfgzj"
 
 [functions.kitchen-chat]
 verify_jwt = false
+
+[functions.recognize-ingredients]
+verify_jwt = false
