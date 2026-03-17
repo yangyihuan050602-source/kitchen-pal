@@ -1,1 +1,4 @@
 project_id = "dlksrihnjbkvskubfgzj"
+
+[functions.kitchen-chat]
+verify_jwt = false
