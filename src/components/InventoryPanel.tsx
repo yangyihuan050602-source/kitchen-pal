@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Ingredient, Constraints, CookingTime, CookingTool, DietaryPreference } from "@/types/kitchen";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, X, Clock, Flame, Leaf, AlertTriangle, ChefHat } from "lucide-react";
+import { Plus, X, Clock, Flame, Leaf, AlertTriangle, ChefHat, Camera, Loader2 } from "lucide-react";
+import { useImageRecognition } from "@/hooks/useImageRecognition";
+import { toast } from "sonner";
 
 interface Props {
   inventory: Ingredient[];
