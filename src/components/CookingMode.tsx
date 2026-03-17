@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { ScoredRecipe } from "@/types/kitchen";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, CheckCircle2, Copy } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2, Copy, Volume2, VolumeX, Square } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
@@ -12,6 +12,32 @@ interface Props {
 
 export default function CookingMode({ recipe }: Props) {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  const speak = useCallback((text: string) => {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.9;
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    utteranceRef.current = utterance;
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  }, []);
+
+  const stopSpeaking = useCallback(() => {
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+  }, []);
+
+  const readCurrentStep = useCallback(() => {
+    const step = recipe.steps[currentStep];
+    speak(`Step ${currentStep + 1}: ${step}`);
+  }, [currentStep, recipe.steps, speak]);
+
+  // Stop speech on unmount
+  useEffect(() => () => window.speechSynthesis.cancel(), []);
 
   const copyShoppingList = () => {
     const list = recipe.missingIngredients.map((i) => `• ${i.name} (${i.amount})`).join("\n");
