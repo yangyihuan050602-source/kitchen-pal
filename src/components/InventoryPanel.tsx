@@ -137,6 +137,29 @@ export default function InventoryPanel({ inventory, setInventory, constraints, s
             <Plus className="h-4 w-4" />
           </Button>
         </div>
+        {/* Image recognition button */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="hidden"
+          onChange={handleImageUpload}
+        />
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full mt-2 gap-2 text-muted-foreground"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={isProcessing}
+        >
+          {isProcessing ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Camera className="h-4 w-4" />
+          )}
+          {isProcessing ? "Analyzing..." : "📸 Scan ingredients from photo"}
+        </Button>
       </div>
 
       {/* Ingredient list */}
