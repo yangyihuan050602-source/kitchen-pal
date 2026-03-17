@@ -92,9 +92,20 @@ export default function CookingMode({ recipe }: Props) {
           >
             <ChevronLeft className="h-4 w-4 mr-1" /> Previous
           </Button>
-          <span className="text-xs text-muted-foreground">
-            Step {currentStep + 1} of {recipe.steps.length}
-          </span>
+          <div className="flex items-center gap-2">
+            {isSpeaking ? (
+              <Button variant="ghost" size="sm" onClick={stopSpeaking} className="text-destructive">
+                <Square className="h-3.5 w-3.5 mr-1" /> Stop
+              </Button>
+            ) : (
+              <Button variant="ghost" size="sm" onClick={readCurrentStep}>
+                <Volume2 className="h-3.5 w-3.5 mr-1" /> Read
+              </Button>
+            )}
+            <span className="text-xs text-muted-foreground">
+              Step {currentStep + 1} of {recipe.steps.length}
+            </span>
+          </div>
           <Button
             size="sm"
             disabled={currentStep === recipe.steps.length - 1}
